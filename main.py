@@ -5,6 +5,26 @@ import sys
 import random
 import math
 
+def modexp1(a, p, m):
+    result = 1
+    count = p
+    while count > 0:
+        result = (result * a) % m
+        count -= 1
+    return result
+
+def modexp(a, p, m):
+    result = 1
+    mask = p
+    power = a
+    while mask != 0:
+        if mask & 1:
+            result = (result * power) % m
+        power = (power * power) % m
+        mask = mask >> 1
+    return result
+
+
 def factor(n):
     while True:
         sq = int(math.sqrt(n))
@@ -27,9 +47,7 @@ def factor(n):
         #
         # Do first step of Euclid GCD with modular exponentiation
         #
-        while r2 > 0:
-            g = (g * a) % n
-            r2 -= 1
+        g = modexp(a, r2, n)
         #
         # Now finish using the normal algorithm
         #
